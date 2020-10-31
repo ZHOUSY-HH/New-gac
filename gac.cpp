@@ -10,30 +10,30 @@
 	gettimeofday(&t, NULL); \
 	now = t.tv_sec + t.tv_usec/1000000.0; \
 }
-#define N 5
+#define N 9
 #define DEBUG
 using namespace std;
 
-int count_all = 0;
+int count_all = 0;	//¶¨Òå·ÃÎÊÁË¶àÉÙ¸ö½Úµã¡£
 int count_test = 0;//ÓÃÓÚ²âÊÔ
 
-struct onenode
+struct onenode	//±íÊ¾Ò»¸ö±äÁ¿µÄÖµ£¬±¾À´Ïë·Åµã¶«Î÷ÔÚÀïÃæµÄ£¬ºóÀ´·¢ÏÖ·ÅÖµ¾Í¿ÉÒÔÁË¡£
 {
 	int value;
 };
 
-struct value
+struct value	//·ÅÔÚÔ¼ÊøÖĞµÄ»ù±¾±äÁ¿¡£
 {
-	int min;
-	int max;
-	bool value[10];
-	vector<pair<int, int>> less;
-	vector<pair<int, int>> more;
+	int min;	//·¶Î§µÄ×îĞ¡Öµ
+	int max;	//·¶Î§µÄ×î´óÖµ
+	bool value[10];	//10¸ö¿ÉÄÜµÄÈ¡Öµ
+	vector<pair<int, int>> less;	//±ÈÄã´óµÄÄÇĞ©½Úµã
+	vector<pair<int, int>> more;	//±ÈÄãĞ¡µÄÄÇĞ©½Úµã
 	int count;
 	bool is_const;
 };
 
-class node
+class node	//Õâ¸ö¾ÍÊÇ±íÊ¾Ô¼ÊøÁË¡£Ã¿Ò»¸ö±äÁ¿ÓĞ×Ô¼ºµÄÔ¼Êø¡£
 {
 public:
 	value data[N][N];
@@ -59,7 +59,7 @@ public:
 		queue<pair<int, int>> my_queue;
 		int counttemp = 0;
 		data[i1][j1].is_const = true;
-		for (int i = 0; i < data[i1][j1].less.size(); i++)
+		for (int i = 0; i < data[i1][j1].less.size(); i++)	//ÅĞ¶ÏÊÇ·ñ·ûºÏÁÚ¾ÓÌõ¼ş£¬Èç¹û·ûºÏÄÇÃ´¾Í¸³Öµ£¬Èç¹û²»·ûºÏ¾ÍÈ¡Ïû¸³Öµ¡£
 		{
 			if (data[data[i1][j1].less[i].first][data[i1][j1].less[i].second].is_const && value <= data1[data[i1][j1].less[i].first][data[i1][j1].less[i].second].value)
 			{
@@ -75,7 +75,7 @@ public:
 				return;
 			}
 		}
-		for (int i = 0; i < data[i1][j1].less.size(); i++)
+		for (int i = 0; i < data[i1][j1].less.size(); i++)	//°ÑÖÜÎ§Î´¸³ÖµµÄÁÚ¾ÓµÄ×î´óÖµ½øĞĞËõ¼õ¡£
 		{
 			//data[data[i1][j1].less[i].first][data[i1][j1].less[i].second].max = value - 1;
 			int temp = data[data[i1][j1].less[i].first][data[i1][j1].less[i].second].max;
@@ -84,7 +84,7 @@ public:
 			if (temp != data[data[i1][j1].less[i].first][data[i1][j1].less[i].second].max)
 				my_queue.push(pair<int, int>(data[i1][j1].less[i].first, data[i1][j1].less[i].second));
 		}
-		for (int i = 0; i < data[i1][j1].more.size(); i++)
+		for (int i = 0; i < data[i1][j1].more.size(); i++)	//°ÑÖÜÎ§Î´¸³ÖµÁÚ¾ÓµÄ×îĞ¡Öµ½øĞĞËõ¼õ¡£
 		{
 			//data[data[i1][j1].more[i].first][data[i1][j1].more[i].second].min = value + 1;
 			int temp = data[data[i1][j1].more[i].first][data[i1][j1].more[i].second].min;
@@ -98,7 +98,7 @@ public:
 			data[i1][j].value[value] = false;
 		int tempi1 = i1;
 		int tempj1 = j1;
-		while (my_queue.size() != 0)
+		while (my_queue.size() != 0)	//×öÍêµÚÒ»²¨¼ì²éÒÔºó£¬ÄÇĞ©ÖµÓò·¢Éú±ä»¯µÄ±äÁ¿Í³Í³¼ÓÈëµ½ÆäÖĞ½øĞĞ×î´óÖµ×îĞ¡ÖµµÄËõ¼õ£¬Àë¿ª¸Ãº¯ÊıºóÈç¹ûÊ£1¸ö¿ÉÄÜµÄÈ¡Öµ¾ÍÈ¡Öµ£¬Èç¹ûÃ»ÓĞ¿ÉÄÜµÄÈ¡ÖµÄÇÃ´¾ÍÒªÁíÈ¡ĞÂµÄ½ÚµãÁË¡£
 		{
 			pair<int, int>temp = my_queue.front();
 			i1 = temp.first;
@@ -159,7 +159,7 @@ void readfile(onenode data1[N][N], node& my_csp)
 		my_csp.data[p1.first][p1.second].more.push_back(p2);
 		my_csp.data[p2.first][p2.second].less.push_back(p1);
 	}
-	for (int i = 0; i < N; i++)	//É¾¼õÖµÓò
+	for (int i = 0; i < N; i++)	//É¾¼õÖµÓò¡£
 		for (int j = 0; j < N; j++)
 		{
 			if (my_csp.data[i][j].is_const)
@@ -176,7 +176,7 @@ void readfile(onenode data1[N][N], node& my_csp)
 		}
 }
 
-void show(onenode data[N][N])
+void show(onenode data[N][N])	//Õ¹Ê¾½á¹û£»
 {
 	for (int i = 0; i < N; i++)
 	{
@@ -243,7 +243,7 @@ bool findsolution(int length, onenode data1[N][N], node my_csp)	//Éî¶È£¬onenodeº
 					}
 					else if (count == 1)	//Èç¹û¸ÕºÃÕÒµ½Ò»¸ö¾Í¸øËû¸³Öµ£¬ºóÃæ¼ÌĞøÅĞ¶Ï;
 					{
-						for (int i = 0; i < my_csp1.data[i2][j2].less.size(); i++)
+						for (int i = 0; i < my_csp1.data[i2][j2].less.size(); i++)	//»¹ÊÇÒªÅĞ¶ÏÁÚ¾ÓÊÇ·ñ·ûºÏÌõ¼ş£¬²»È»»á³ö´íÎó¡£
 						{
 							if (my_csp1.data[my_csp1.data[i2][j2].less[i].first][my_csp1.data[i2][j2].less[i].second].is_const && tempvalue <= data1[my_csp1.data[i2][j2].less[i].first][my_csp1.data[i2][j2].less[i].second].value)
 								to_continue = true;
